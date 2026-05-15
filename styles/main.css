@@ -1,0 +1,123 @@
+/* ============================================================
+   Parasite Depths — Main Stylesheet
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #020508;
+    font-family: 'Press Start 2P', monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 30%, #0a1a2a 0%, #040810 50%, #020406 100%);
+}
+
+#game-container {
+    position: relative;
+    border: 2px solid rgba(0, 255, 204, 0.15);
+    border-radius: 6px;
+    box-shadow:
+        0 0 30px rgba(0, 255, 204, 0.08),
+        0 0 60px rgba(0, 100, 80, 0.05),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+}
+
+/* --- Loading Screen --- */
+#loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #040a14 0%, #0a2030 50%, #041018 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#loading-screen h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: #00ffcc;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.4), 0 0 40px rgba(0, 255, 204, 0.2);
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.loading-bar-container {
+    width: 280px;
+    height: 16px;
+    background: #0a1a2a;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00aa88, #00ffcc, #44ffdd);
+    border-radius: 6px;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+#loading-screen p {
+    margin-top: 16px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #336655;
+    letter-spacing: 1px;
+    animation: pulse-text 2s ease-in-out infinite;
+}
+
+@keyframes pulse-text {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* --- Ambient floating dots (CSS only) --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(0, 255, 200, 0.15) 50%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(0, 200, 255, 0.1) 50%, transparent 100%),
+        radial-gradient(1px 1px at 70% 40%, rgba(0, 255, 180, 0.12) 50%, transparent 100%),
+        radial-gradient(1px 1px at 90% 80%, rgba(0, 220, 200, 0.1) 50%, transparent 100%),
+        radial-gradient(2px 2px at 50% 10%, rgba(0, 255, 204, 0.08) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+    animation: drift 20s linear infinite;
+}
+
+@keyframes drift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-30px); }
+}
