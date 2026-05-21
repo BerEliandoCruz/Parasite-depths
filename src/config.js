@@ -101,14 +101,14 @@ const CONFIG = {
     // --- Items ---
     ITEMS: {
         BIO_ENERGY: {
-            name: 'Bio-Energy',
+            name: 'Bioenergia',
             color: 0x44ff88,
             effect: 'heal',
             value: 30,          // % energy restored
             points: 25,
         },
         RARE_PARASITE: {
-            name: 'Rare Parasite',
+            name: 'Parasita Raro',
             color: 0xffdd44,
             effect: 'multiplier',
             value: 2,           // multiplier amount
@@ -116,7 +116,7 @@ const CONFIG = {
             points: 50,
         },
         TURBO: {
-            name: 'Ocean Turbo',
+            name: 'Turbo Oceânico',
             color: 0x44aaff,
             effect: 'speed',
             value: 1.8,         // speed multiplier
@@ -137,14 +137,14 @@ const CONFIG = {
 
     // --- Biomes ---
     BIOMES: [
-        { name: 'Shallow Ocean',  distance: 0,     bgTop: 0x0a4a7a, bgBot: 0x062a4a, sharkMult: 1.0 },
-        { name: 'Coral Reefs',    distance: 500,   bgTop: 0x0a6a5a, bgBot: 0x044a3a, sharkMult: 1.5 },
-        { name: 'Open Sea',       distance: 1200,  bgTop: 0x082848, bgBot: 0x041828, sharkMult: 2.0 },
-        { name: 'Deep Ocean',     distance: 2200,  bgTop: 0x041428, bgBot: 0x020a18, sharkMult: 2.6 },
-        { name: 'Caverns',        distance: 3500,  bgTop: 0x0a0a1a, bgBot: 0x050510, sharkMult: 3.2 },
-        { name: 'Volcanic Zone',  distance: 5000,  bgTop: 0x1a0808, bgBot: 0x0a0404, sharkMult: 3.8 },
-        { name: 'Industrial',     distance: 7000,  bgTop: 0x0a0a0a, bgBot: 0x050508, sharkMult: 4.5 },
-        { name: 'Coastal',        distance: 10000, bgTop: 0x1a3a2a, bgBot: 0x0a2a1a, sharkMult: 5.5 },
+        { name: 'Oceano Raso',        distance: 0,     bgTop: 0x0a4a7a, bgBot: 0x062a4a, sharkMult: 1.0 },
+        { name: 'Recifes de Coral',   distance: 500,   bgTop: 0x0a6a5a, bgBot: 0x044a3a, sharkMult: 1.5 },
+        { name: 'Mar Aberto',         distance: 1200,  bgTop: 0x082848, bgBot: 0x041828, sharkMult: 2.0 },
+        { name: 'Oceano Profundo',    distance: 2200,  bgTop: 0x041428, bgBot: 0x020a18, sharkMult: 2.6 },
+        { name: 'Cavernas',           distance: 3500,  bgTop: 0x0a0a1a, bgBot: 0x050510, sharkMult: 3.2 },
+        { name: 'Zona Vulcânica',     distance: 5000,  bgTop: 0x1a0808, bgBot: 0x0a0404, sharkMult: 3.8 },
+        { name: 'Industrial',         distance: 7000,  bgTop: 0x0a0a0a, bgBot: 0x050508, sharkMult: 4.5 },
+        { name: 'Costeiro',           distance: 10000, bgTop: 0x1a3a2a, bgBot: 0x0a2a1a, sharkMult: 5.5 },
     ],
 
     // --- Colors ---
@@ -164,19 +164,25 @@ const CONFIG = {
     // --- Skins ---
     SKINS: {
         PARASITE: [
-            { id: 'classic', name: 'Classic Cyan', cost: 0, glow: 0x00ffcc, body: 0x00ddaa, core: 0x88ffee },
-            { id: 'vampiric', name: 'Vampiric Crimson', cost: 50, glow: 0xff3333, body: 0xcc1111, core: 0xff8888 },
-            { id: 'abyssal', name: 'Abyssal Gold', cost: 120, glow: 0xffaa00, body: 0xdd8800, core: 0xffddaa },
-            { id: 'nebula', name: 'Nebula Purple', cost: 250, glow: 0xaa44ff, body: 0x8822dd, core: 0xeebbff },
-            { id: 'toxic', name: 'Toxic Acid', cost: 400, glow: 0x39ff14, body: 0x22cc00, core: 0xccffaa },
-            { id: 'shark', name: 'Apex Shark', cost: 600, glow: 0x88aacc, body: 0x556688, core: 0xccddee },
-            { id: 'puffer', name: 'Spiky Puffer', cost: 850, glow: 0xffcc44, body: 0xdd8822, core: 0xffffaa },
+            { id: 'classic', name: 'Ciano Clássico', cost: 0, glow: 0x00ffcc, body: 0x00ddaa, core: 0xffffff },
+            { id: 'crimson', name: 'Carmesim Vampírico', cost: 50, glow: 0xff2222, body: 0xaa0000, core: 0xff8888 },
+            { id: 'gold', name: 'Ouro Abissal', cost: 120, glow: 0xffcc00, body: 0xcca300, core: 0xffffee },
+            { id: 'nebula', name: 'Roxo Nebulosa', cost: 250, glow: 0xaa44ff, body: 0x7722cc, core: 0xeeddff },
+            { id: 'toxic', name: 'Ácido Tóxico', cost: 400, glow: 0x66ff00, body: 0x44aa00, core: 0xccffaa },
+            { id: 'clownfish', name: 'Peixe-Palhaço', cost: 480, glow: 0xff7700, body: 0xff5500, core: 0xffffff },
+            { id: 'shark', name: 'Tubarão Alfa', cost: 600, glow: 0x88aacc, body: 0x556688, core: 0xccddee },
+            { id: 'turtle', name: 'Tartaruga Marinha', cost: 700, glow: 0x33cc77, body: 0x228855, core: 0xaaffcc },
+            { id: 'squid', name: 'Lula Profunda', cost: 780, glow: 0xff44aa, body: 0xcc2277, core: 0xffddf0 },
+            { id: 'sealion', name: 'Leão Marinho', cost: 820, glow: 0xffaa66, body: 0x8b5a2b, core: 0xffeebb },
+            { id: 'puffer', name: 'Baiacu Espinhoso', cost: 850, glow: 0xffcc44, body: 0xdd8822, core: 0xffffaa },
+            { id: 'platypus', name: 'Ornitorrinco', cost: 950, glow: 0x44ccff, body: 0x6b4226, core: 0xddeeff },
         ],
         HOST: [
-            { id: 'standard', name: 'Standard Biolum', cost: 0, colors: { SMALL: 0x44ddff, MEDIUM: 0x33bbaa, PREDATOR: 0xff6644 } },
+            { id: 'standard', name: 'Biolum Padrão', cost: 0, colors: { SMALL: 0x44ddff, MEDIUM: 0x33bbaa, PREDATOR: 0xff6644 } },
             { id: 'neon', name: 'Neon Cyberpunk', cost: 80, colors: { SMALL: 0xff00ff, MEDIUM: 0x00ffff, PREDATOR: 0xff00aa } },
-            { id: 'ghost', name: 'Ghostly Abyss', cost: 180, colors: { SMALL: 0xe0e8f0, MEDIUM: 0xc8d8e8, PREDATOR: 0xb0c8e0 } },
-            { id: 'volcanic', name: 'Volcanic Magma', cost: 300, colors: { SMALL: 0xff5500, MEDIUM: 0xcc3300, PREDATOR: 0xaa2200 } },
+            { id: 'ghost', name: 'Abismo Fantasmagórico', cost: 180, colors: { SMALL: 0xe0e8f0, MEDIUM: 0xc8d8e8, PREDATOR: 0xb0c8e0 } },
+            { id: 'volcanic', name: 'Magma Vulcânico', cost: 300, colors: { SMALL: 0xff5500, MEDIUM: 0xcc3300, PREDATOR: 0xaa2200 } },
+            { id: 'piranha', name: 'Piranha', cost: 450, colors: { SMALL: 0x44aa55, MEDIUM: 0x338844, PREDATOR: 0xcc3322 } },
         ]
     }
 };

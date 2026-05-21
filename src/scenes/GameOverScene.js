@@ -42,7 +42,7 @@ class GameOverScene extends Phaser.Scene {
 
         // Title
         const titleColor = this.isNewHighScore ? '#ffdd44' : '#ff4444';
-        this.add.text(w / 2, h * 0.12, 'GAME OVER', {
+        this.add.text(w / 2, h * 0.12, 'FIM DE JOGO', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '32px',
             color: titleColor,
@@ -52,7 +52,7 @@ class GameOverScene extends Phaser.Scene {
 
         // New high score celebration
         if (this.isNewHighScore) {
-            const hsText = this.add.text(w / 2, h * 0.20, '★ NEW HIGH SCORE! ★', {
+            const hsText = this.add.text(w / 2, h * 0.20, '★ NOVO RECORDE! ★', {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '14px',
                 color: '#ffdd44',
@@ -71,12 +71,12 @@ class GameOverScene extends Phaser.Scene {
         // Stats
         const statsY = h * 0.28;
         const stats = [
-            { label: 'SCORE', value: this.finalScore.toLocaleString(), color: '#00ffcc' },
-            { label: 'DISTANCE', value: this.finalDistance + 'm', color: '#88ccbb' },
-            { label: 'SHARKS', value: `${this.sharksEaten} Eaten / ${this.sharksDodged} Dodged`, color: '#ffaa66' },
-            { label: 'BIO-MATTER EARNED', value: '+' + this.bioMatterEarned.toString(), color: '#44ff88' },
-            { label: 'TOTAL BIO-MATTER', value: this.totalBioMatter.toString(), color: '#00ffaa' },
-            { label: 'HIGH SCORE', value: this.highScore.toLocaleString(), color: '#ffdd44' },
+            { label: 'PONTOS', value: this.finalScore.toLocaleString(), color: '#00ffcc' },
+            { label: 'DISTÂNCIA', value: this.finalDistance + 'm', color: '#88ccbb' },
+            { label: 'TUBARÕES', value: `${this.sharksEaten} Comidos / ${this.sharksDodged} Desviados`, color: '#ffaa66' },
+            { label: 'CÉLULAS GANHAS', value: '+' + this.bioMatterEarned.toString(), color: '#44ff88' },
+            { label: 'TOTAL DE CÉLULAS', value: this.totalBioMatter.toString(), color: '#00ffaa' },
+            { label: 'RECORDE', value: this.highScore.toLocaleString(), color: '#ffdd44' },
         ];
 
         stats.forEach((stat, i) => {
@@ -95,10 +95,10 @@ class GameOverScene extends Phaser.Scene {
 
         // Buttons
         const btnY = h * 0.85;
-        this._createButton(w / 2 - 130, btnY, 'RETRY', () => {
+        this._createButton(w / 2 - 130, btnY, 'REPETIR', () => {
             this.scene.start('GameScene');
         });
-        this._createButton(w / 2, btnY, 'SHOP', () => {
+        this._createButton(w / 2, btnY, 'LOJA', () => {
             this.scene.start('ShopScene');
         });
         this._createButton(w / 2 + 130, btnY, 'MENU', () => {

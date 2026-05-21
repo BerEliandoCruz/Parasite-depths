@@ -61,7 +61,7 @@ class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(10);
 
         // Subtitle
-        this.add.text(w / 2, h * 0.40, 'Survive the Deep. Dominate the Ocean.', {
+        this.add.text(w / 2, h * 0.40, 'Sobreviva nas Profundezas. Domine o Oceano.', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '10px',
             color: '#448877',
@@ -90,14 +90,14 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Buttons
-        this._createButton(w / 2, h * 0.48, 'PLAY', () => this._startGame());
-        this._createButton(w / 2, h * 0.58, 'SHOP', () => this.scene.start('ShopScene'));
-        this._createButton(w / 2, h * 0.68, 'CONTROLS', () => this._showControls());
-        this._createButton(w / 2, h * 0.78, 'CREDITS', () => this._showCredits());
+        this._createButton(w / 2, h * 0.48, 'JOGAR', () => this._startGame());
+        this._createButton(w / 2, h * 0.58, 'LOJA', () => this.scene.start('ShopScene'));
+        this._createButton(w / 2, h * 0.68, 'CONTROLES', () => this._showControls());
+        this._createButton(w / 2, h * 0.78, 'CRÉDITOS', () => this._showCredits());
 
         // Bio-matter / cells display in top-right
         const bioMatter = parseInt(localStorage.getItem('pd_biomatter') || '0', 10);
-        this.add.text(w - 20, 20, 'CELLS: ' + bioMatter, {
+        this.add.text(w - 20, 20, 'CÉLULAS: ' + bioMatter, {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '10px',
             color: '#00ffaa',
@@ -106,7 +106,7 @@ class MenuScene extends Phaser.Scene {
         // High score
         const hs = parseInt(localStorage.getItem('pd_highscore') || '0', 10);
         if (hs > 0) {
-            this.add.text(w / 2, h * 0.90, 'HIGH SCORE: ' + hs, {
+            this.add.text(w / 2, h * 0.90, 'RECORDE: ' + hs, {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '11px',
                 color: '#ffdd44',
@@ -115,14 +115,14 @@ class MenuScene extends Phaser.Scene {
 
         // Controls overlay (hidden)
         this.controlsOverlay = this._createOverlay(
-            'CONTROLS',
-            'W — Swim Up\nS — Swim Down\n\nCollide with fish to possess them\nEat sharks while possessing\n\nSurvive as long as possible!'
+            'CONTROLES',
+            'W — Nadar para Cima\nS — Nadar para Baixo\n\nColida com peixes para possuí-los\nComa tubarões enquanto possui\n\nSobreviva o máximo possível!'
         );
 
         // Credits overlay (hidden)
         this.creditsOverlay = this._createOverlay(
-            'CREDITS',
-            'Parasite Depths\n\nA deep-sea endless runner\n\nBuilt with Phaser 3\n\n2025'
+            'CRÉDITOS',
+            'Parasite Depths\n\nUm endless runner no fundo do mar\n\nFeito com Phaser 3\n\n2025'
         );
 
         // Keyboard shortcut
@@ -185,7 +185,7 @@ class MenuScene extends Phaser.Scene {
             lineSpacing: 8,
         }).setOrigin(0.5));
 
-        const closeBtn = this.add.text(w/2, h * 0.85, 'CLOSE', {
+        const closeBtn = this.add.text(w/2, h * 0.85, 'FECHAR', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '14px',
             color: '#ff8866',
