@@ -3,6 +3,13 @@
 // ============================================================
 
 window.addEventListener('load', () => {
+    // Força o reset das células e progresso a pedido do usuário
+    if (!localStorage.getItem('pd_reset_v1')) {
+        localStorage.clear();
+        localStorage.setItem('pd_reset_v1', 'true');
+        console.log('Progresso resetado com sucesso!');
+    }
+
     const config = {
         type: Phaser.AUTO,
         width: CONFIG.WIDTH,

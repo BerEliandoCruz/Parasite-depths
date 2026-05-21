@@ -18,7 +18,7 @@ class HUDScene extends Phaser.Scene {
         const pad = 16;
 
         // Score
-        this.scoreLabel = this.add.text(pad, pad, 'SCORE', {
+        this.scoreLabel = this.add.text(pad, pad, 'PONTOS', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '8px',
             color: '#448877',
@@ -31,7 +31,7 @@ class HUDScene extends Phaser.Scene {
         });
 
         // Distance
-        this.distLabel = this.add.text(pad, pad + 40, 'DISTANCE', {
+        this.distLabel = this.add.text(pad, pad + 40, 'DISTÂNCIA', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '8px',
             color: '#448877',
@@ -51,7 +51,7 @@ class HUDScene extends Phaser.Scene {
         }).setOrigin(1, 0);
 
         // Speed indicator
-        this.speedText = this.add.text(w - pad, pad + 22, 'SPD: --', {
+        this.speedText = this.add.text(w - pad, pad + 22, 'VEL: --', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '8px',
             color: '#556677',
@@ -120,7 +120,7 @@ class HUDScene extends Phaser.Scene {
         const gameScene = this.scene.get('GameScene');
         if (gameScene && gameScene.scrollSpeed) {
             const pct = Math.floor((gameScene.scrollSpeed / CONFIG.MAX_SCROLL_SPEED) * 100);
-            this.speedText.setText('SPD: ' + pct + '%');
+            this.speedText.setText('VEL: ' + pct + '%');
         }
 
         // Biome

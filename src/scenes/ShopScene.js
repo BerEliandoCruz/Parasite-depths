@@ -30,7 +30,7 @@ class ShopScene extends Phaser.Scene {
         }
 
         // Title
-        this.add.text(w / 2, 40, 'ABYSSAL MARKET', {
+        this.add.text(w / 2, 40, 'MERCADO ABISSAL', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '24px',
             color: '#00ffcc',
@@ -39,7 +39,7 @@ class ShopScene extends Phaser.Scene {
         }).setOrigin(0.5);
 
         // Subtitle
-        this.add.text(w / 2, 70, 'Mutate your form. Adapt to survive.', {
+        this.add.text(w / 2, 70, 'Mute sua forma. Adapte-se para sobreviver.', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '8px',
             color: '#448877',
@@ -64,11 +64,11 @@ class ShopScene extends Phaser.Scene {
         this.listItems = [];
 
         // Left Container (Skin List)
-        this.listContainer = this.add.container(60, 150);
+        this.listContainer = this.add.container(60, 130);
 
         // Tabs
-        this.tabParasite = this._createTabButton(w / 4, 110, 'PARASITES', () => this._switchTab('parasite'));
-        this.tabHost = this._createTabButton((3 * w) / 4, 110, 'HOST FISH', () => this._switchTab('host'));
+        this.tabParasite = this._createTabButton(w / 4, 110, 'PARASITAS', () => this._switchTab('parasite'));
+        this.tabHost = this._createTabButton((3 * w) / 4, 110, 'HOSPEDEIROS', () => this._switchTab('host'));
         this._updateTabStyles();
 
         // Preview Area (Right Side)
@@ -82,7 +82,7 @@ class ShopScene extends Phaser.Scene {
         pFrame.strokeRoundedRect(-140, -110, 280, 220, 8);
         this.previewContainer.add(pFrame);
 
-        this.previewText = this.add.text(0, -90, 'PREVIEW', {
+        this.previewText = this.add.text(0, -90, 'PRÉVIA', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '10px',
             color: '#5588aa',
@@ -106,7 +106,7 @@ class ShopScene extends Phaser.Scene {
         this.actionBtn.on('pointerdown', () => this._onActionButtonClick());
 
         // Back Button
-        const backBtn = this.add.text(60, h - 45, '← BACK TO MENU', {
+        const backBtn = this.add.text(60, h - 45, '← VOLTAR AO MENU', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '11px',
             color: '#ff8866',
@@ -179,7 +179,7 @@ class ShopScene extends Phaser.Scene {
 
     _updateCurrencyDisplay() {
         const cells = parseInt(localStorage.getItem('pd_biomatter') || '0', 10);
-        this.currencyText.setText(`CELLS: ${cells}`);
+        this.currencyText.setText(`CÉLULAS: ${cells}`);
     }
 
     _createTabButton(x, y, text, callback) {
@@ -231,7 +231,7 @@ class ShopScene extends Phaser.Scene {
             const isEquipped = skin.id === activeEquippedId;
 
             // Container for list row
-            const row = this.add.container(0, idx * 45);
+            const row = this.add.container(0, idx * 28);
 
             // Selection indicator dot
             const dot = this.add.circle(-15, 8, 4, isSelected ? 0x00ffcc : 0x0a2a3a);
@@ -257,17 +257,17 @@ class ShopScene extends Phaser.Scene {
             let statusStr = '';
             let statusColor = '#556666';
             if (isEquipped) {
-                statusStr = 'EQUIPPED';
+                statusStr = 'EQUIPADO';
                 statusColor = '#00ffaa';
             } else if (isOwned) {
-                statusStr = 'OWNED';
+                statusStr = 'ADQUIRIDO';
                 statusColor = '#0088ff';
             } else {
-                statusStr = `${skin.cost} CELLS`;
+                statusStr = `${skin.cost} CÉLULAS`;
                 statusColor = '#ffbb44';
             }
 
-            const statusText = this.add.text(260, 1, statusStr, {
+            const statusText = this.add.text(310, 1, statusStr, {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '8px',
                 color: statusColor,
@@ -278,7 +278,7 @@ class ShopScene extends Phaser.Scene {
             if (isSelected) {
                 const line = this.add.graphics();
                 line.lineStyle(1, 0x00ffcc, 0.4);
-                line.lineBetween(-20, 20, 270, 20);
+                line.lineBetween(-20, 18, 320, 18);
                 row.add(line);
             }
 
@@ -344,15 +344,15 @@ class ShopScene extends Phaser.Scene {
         this.actionBtnBg.clear();
 
         if (isEquipped) {
-            this.actionBtn.setText('EQUIPPED').setColor('#558877').disableInteractive();
+            this.actionBtn.setText('EQUIPADO').setColor('#558877').disableInteractive();
             this.actionBtnBg.fillStyle(0x0a1c18, 1);
             this.actionBtnBg.lineStyle(1, 0x00ffcc, 0.1);
         } else if (isOwned) {
-            this.actionBtn.setText('EQUIP SKIN').setColor('#00ffcc').setInteractive({ useHandCursor: true });
+            this.actionBtn.setText('EQUIPAR').setColor('#00ffcc').setInteractive({ useHandCursor: true });
             this.actionBtnBg.fillStyle(0x0c2c30, 1);
             this.actionBtnBg.lineStyle(2, 0x00ffcc, 0.6);
         } else {
-            this.actionBtn.setText(`BUY: ${skin.cost} CELLS`).setColor('#ffbb44').setInteractive({ useHandCursor: true });
+            this.actionBtn.setText(`COMPRAR: ${skin.cost}`).setColor('#ffbb44').setInteractive({ useHandCursor: true });
             this.actionBtnBg.fillStyle(0x2d1a0c, 1);
             this.actionBtnBg.lineStyle(2, 0xffaa00, 0.6);
         }
