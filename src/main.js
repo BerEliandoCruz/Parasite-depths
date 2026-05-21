@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
             pixelArt: false,
             antialias: true,
         },
-        scene: [BootScene, MenuScene, GameScene, HUDScene, GameOverScene],
+        scene: [BootScene, MenuScene, GameScene, HUDScene, GameOverScene, ShopScene],
     };
 
     const game = new Phaser.Game(config);

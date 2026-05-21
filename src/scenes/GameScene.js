@@ -54,7 +54,7 @@ class GameScene extends Phaser.Scene {
         this.speedLines = this.add.particles(0, 0, 'speed_line', {
             x: { min: 0, max: w },
             y: { min: 0, max: h },
-            speedX: { min: -200, max: -100 },
+            speedX: { min: -550, max: -300 },
             scale: { start: 1, end: 0.5 },
             alpha: { start: 0.1, end: 0 },
             lifespan: 800,
@@ -123,10 +123,10 @@ class GameScene extends Phaser.Scene {
             down: { isDown: this.cursors.down.isDown || this.cursorsAlt.down.isDown },
         };
 
-        // Increase scroll speed
+        // Increase scroll speed (frame-rate independent, directly using seconds)
         this.scrollSpeed = Math.min(
             CONFIG.MAX_SCROLL_SPEED,
-            this.scrollSpeed + CONFIG.SCROLL_ACCELERATION * (delta / 1000) * 60
+            this.scrollSpeed + CONFIG.SCROLL_ACCELERATION * (delta / 1000)
         );
 
         // Apply host speed multiplier
@@ -148,25 +148,26 @@ class GameScene extends Phaser.Scene {
         spawned.items.forEach(i => this.itemGroup.add(i));
 
         // Update sharks
-        this.sharkGroup.getChildren().forEach(shark => {
+        [...this.sharkGroup.getChildren()].forEach(shark => {
             if (shark.active) {
+                const dodgePoints = shark.cfg.points_dodge;
                 const dodged = shark.update(delta, effectiveSpeed);
                 if (dodged) {
-                    this.scoreSystem.addDodge(shark.cfg.points_dodge);
+                    this.scoreSystem.addDodge(dodgePoints);
                     AUDIO.playDodge();
                 }
             }
         });
 
         // Update free hosts
-        this.hostGroup.getChildren().forEach(host => {
+        [...this.hostGroup.getChildren()].forEach(host => {
             if (host.active && !host.possessed) {
                 host.update(delta, null, effectiveSpeed);
             }
         });
 
         // Update items
-        this.itemGroup.getChildren().forEach(item => {
+        [...this.itemGroup.getChildren()].forEach(item => {
             if (item.active) item.update(delta, effectiveSpeed);
         });
 
@@ -220,7 +221,7 @@ class GameScene extends Phaser.Scene {
 
     _updateBackgroundDecos(delta, scrollSpeed) {
         this.bgDecos.forEach(deco => {
-            deco.x -= (deco.decoSpeed + scrollSpeed * 0.1) * (delta / 1000);
+            deco.x -= (deco.decoSpeed + scrollSpeed * 0.6) * (delta / 1000);
             if (deco.x < -60) {
                 deco.x = CONFIG.WIDTH + 60;
                 deco.y = CONFIG.HEIGHT - Phaser.Math.Between(5, 30);
@@ -280,6 +281,8 @@ class GameScene extends Phaser.Scene {
                 sharksEaten: this.scoreSystem.sharksEaten,
                 isNewHighScore: this.scoreSystem.isNewHighScore(),
                 highScore: this.scoreSystem.highScore,
+                bioMatterEarned: this.scoreSystem.calculateBioMatterEarned(),
+                totalBioMatter: parseInt(localStorage.getItem('pd_biomatter') || '0', 10),
             });
         });
     }

@@ -14,21 +14,21 @@ class CollisionSystem {
         this.onDeath = onDeath;
 
         // 1. Parasite x Shark → death (if not invincible, not possessing)
-        scene.physics.add.overlap(parasite, sharkGroup, (p, shark) => {
+        this.scene.physics.add.overlap(parasite, sharkGroup, (p, shark) => {
             if (p.state === 'possessing' || p.invincible) return;
             AUDIO.playDeath();
             this.onDeath();
         });
 
         // 2. Parasite x Host → possession
-        scene.physics.add.overlap(parasite, hostGroup, (p, host) => {
+        this.scene.physics.add.overlap(parasite, hostGroup, (p, host) => {
             if (p.state === 'possessing' || p.invincible) return;
             if (host.possessed) return;
             hostSystem.possess(parasite, host);
         });
 
         // 3. Parasite x Items → collect (when free)
-        scene.physics.add.overlap(parasite, itemGroup, (p, item) => {
+        this.scene.physics.add.overlap(parasite, itemGroup, (p, item) => {
             if (p.state === 'possessing') return;
             // Items still give points when free, but no host-specific effects
             scoreSystem.addItemPoints(item.cfg.points);
@@ -50,7 +50,7 @@ class CollisionSystem {
         if (!host || !host.active) return;
 
         // Host x Shark
-        this.sharkGroup.getChildren().forEach(shark => {
+        [...this.sharkGroup.getChildren()].forEach(shark => {
             if (!shark.active) return;
             if (!Phaser.Geom.Intersects.RectangleToRectangle(
                 host.getBounds(), shark.getBounds()
@@ -72,7 +72,7 @@ class CollisionSystem {
         });
 
         // Host x Items
-        this.itemGroup.getChildren().forEach(item => {
+        [...this.itemGroup.getChildren()].forEach(item => {
             if (!item.active) return;
             if (!Phaser.Geom.Intersects.RectangleToRectangle(
                 host.getBounds(), item.getBounds()

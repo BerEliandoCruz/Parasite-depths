@@ -14,6 +14,8 @@ class GameOverScene extends Phaser.Scene {
         this.sharksEaten = data.sharksEaten || 0;
         this.isNewHighScore = data.isNewHighScore || false;
         this.highScore = data.highScore || 0;
+        this.bioMatterEarned = data.bioMatterEarned || 0;
+        this.totalBioMatter = data.totalBioMatter || 0;
     }
 
     create() {
@@ -50,7 +52,7 @@ class GameOverScene extends Phaser.Scene {
 
         // New high score celebration
         if (this.isNewHighScore) {
-            const hsText = this.add.text(w / 2, h * 0.22, '★ NEW HIGH SCORE! ★', {
+            const hsText = this.add.text(w / 2, h * 0.20, '★ NEW HIGH SCORE! ★', {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '14px',
                 color: '#ffdd44',
@@ -67,35 +69,39 @@ class GameOverScene extends Phaser.Scene {
         }
 
         // Stats
-        const statsY = h * 0.35;
+        const statsY = h * 0.28;
         const stats = [
             { label: 'SCORE', value: this.finalScore.toLocaleString(), color: '#00ffcc' },
             { label: 'DISTANCE', value: this.finalDistance + 'm', color: '#88ccbb' },
-            { label: 'SHARKS DODGED', value: this.sharksDodged.toString(), color: '#88aacc' },
-            { label: 'SHARKS EATEN', value: this.sharksEaten.toString(), color: '#ff8866' },
+            { label: 'SHARKS', value: `${this.sharksEaten} Eaten / ${this.sharksDodged} Dodged`, color: '#ffaa66' },
+            { label: 'BIO-MATTER EARNED', value: '+' + this.bioMatterEarned.toString(), color: '#44ff88' },
+            { label: 'TOTAL BIO-MATTER', value: this.totalBioMatter.toString(), color: '#00ffaa' },
             { label: 'HIGH SCORE', value: this.highScore.toLocaleString(), color: '#ffdd44' },
         ];
 
         stats.forEach((stat, i) => {
-            const y = statsY + i * 36;
-            this.add.text(w / 2 - 140, y, stat.label, {
+            const y = statsY + i * 32;
+            this.add.text(w * 0.22, y, stat.label, {
                 fontFamily: '"Press Start 2P", monospace',
-                fontSize: '10px',
+                fontSize: '9px',
                 color: '#556666',
-            });
-            this.add.text(w / 2 + 140, y, stat.value, {
+            }).setOrigin(0, 0);
+            this.add.text(w * 0.78, y, stat.value, {
                 fontFamily: '"Press Start 2P", monospace',
-                fontSize: '12px',
+                fontSize: '11px',
                 color: stat.color,
             }).setOrigin(1, 0);
         });
 
         // Buttons
-        const btnY = h * 0.82;
-        this._createButton(w / 2 - 100, btnY, 'RETRY', () => {
+        const btnY = h * 0.85;
+        this._createButton(w / 2 - 130, btnY, 'RETRY', () => {
             this.scene.start('GameScene');
         });
-        this._createButton(w / 2 + 100, btnY, 'MENU', () => {
+        this._createButton(w / 2, btnY, 'SHOP', () => {
+            this.scene.start('ShopScene');
+        });
+        this._createButton(w / 2 + 130, btnY, 'MENU', () => {
             this.scene.start('MenuScene');
         });
 

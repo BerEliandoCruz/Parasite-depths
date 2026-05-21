@@ -68,11 +68,20 @@ class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(10);
 
         // Floating parasite on title
-        const paraPreview = this.add.image(w / 2 - 160, h * 0.24, 'parasite');
+        const activeSkinId = localStorage.getItem('pd_parasite_skin') || 'classic';
+
+        const paraGlow = this.add.image(w / 2 - 160, h * 0.24, 'parasite_glow_' + activeSkinId);
+        paraGlow.setScale(1.8);
+        paraGlow.setDepth(10);
+        paraGlow.setBlendMode(Phaser.BlendModes.ADD);
+        paraGlow.setAlpha(0.5);
+
+        const paraPreview = this.add.image(w / 2 - 160, h * 0.24, 'parasite_' + activeSkinId);
         paraPreview.setScale(2);
         paraPreview.setDepth(11);
+
         this.tweens.add({
-            targets: paraPreview,
+            targets: [paraPreview, paraGlow],
             y: h * 0.24 + 8,
             duration: 1500,
             yoyo: true,
@@ -81,14 +90,23 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Buttons
-        this._createButton(w / 2, h * 0.55, 'PLAY', () => this._startGame());
-        this._createButton(w / 2, h * 0.66, 'CONTROLS', () => this._showControls());
-        this._createButton(w / 2, h * 0.77, 'CREDITS', () => this._showCredits());
+        this._createButton(w / 2, h * 0.48, 'PLAY', () => this._startGame());
+        this._createButton(w / 2, h * 0.58, 'SHOP', () => this.scene.start('ShopScene'));
+        this._createButton(w / 2, h * 0.68, 'CONTROLS', () => this._showControls());
+        this._createButton(w / 2, h * 0.78, 'CREDITS', () => this._showCredits());
+
+        // Bio-matter / cells display in top-right
+        const bioMatter = parseInt(localStorage.getItem('pd_biomatter') || '0', 10);
+        this.add.text(w - 20, 20, 'CELLS: ' + bioMatter, {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '10px',
+            color: '#00ffaa',
+        }).setOrigin(1, 0).setDepth(10);
 
         // High score
         const hs = parseInt(localStorage.getItem('pd_highscore') || '0', 10);
         if (hs > 0) {
-            this.add.text(w / 2, h * 0.91, 'HIGH SCORE: ' + hs, {
+            this.add.text(w / 2, h * 0.90, 'HIGH SCORE: ' + hs, {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '11px',
                 color: '#ffdd44',

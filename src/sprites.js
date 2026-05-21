@@ -8,87 +8,194 @@ class SpriteGenerator {
     }
 
     generateAll() {
-        this.generateParasite();
-        this.generateParasiteGlow();
-        this.generateHosts();
+        CONFIG.SKINS.PARASITE.forEach(skin => {
+            this.generateParasite(skin);
+            this.generateParasiteGlow(skin);
+        });
+        CONFIG.SKINS.HOST.forEach(skin => {
+            this.generateHosts(skin);
+        });
         this.generateSharks();
         this.generateItems();
         this.generateBackgroundElements();
         this.generateParticles();
     }
 
-    generateParasite() {
+    generateParasite(skin) {
         const g = this.scene.make.graphics({ x: 0, y: 0, add: false });
         const s = 18;
-        // Body - bioluminescent blob
-        g.fillStyle(0x00ddaa, 1);
-        g.fillEllipse(s, s, s * 1.6, s * 1.2);
-        // Inner glow
-        g.fillStyle(0x00ffcc, 0.6);
-        g.fillEllipse(s, s, s * 0.9, s * 0.7);
-        // Core bright spot
-        g.fillStyle(0x88ffee, 0.8);
-        g.fillEllipse(s - 2, s - 2, s * 0.4, s * 0.3);
-        // Eye
-        g.fillStyle(0xffffff, 0.9);
-        g.fillCircle(s + 4, s - 3, 3);
-        g.fillStyle(0x000000, 1);
-        g.fillCircle(s + 5, s - 3, 1.5);
-        // Tentacles
-        g.lineStyle(2, 0x00ccaa, 0.7);
-        g.beginPath();
-        g.moveTo(s - 10, s + 2);
-        g.lineTo(s - 16, s + 6);
-        g.moveTo(s - 10, s + 5);
-        g.lineTo(s - 17, s + 10);
-        g.moveTo(s - 8, s + 7);
-        g.lineTo(s - 14, s + 13);
-        g.strokePath();
-        g.generateTexture('parasite', s * 2, s * 2);
+
+        if (skin.id === 'shark') {
+            const w = s * 1.8, h = s * 1.0;
+            const cx = w/2 + 10, cy = h/2 + 10;
+            // Body
+            g.fillStyle(skin.body, 1);
+            g.fillEllipse(cx, cy, w, h);
+            // Snout
+            g.fillTriangle(cx + w/2, cy, cx + w/2 + 12, cy + 2, cx + w/2, cy + h * 0.3);
+            // Dorsal fin
+            g.fillTriangle(cx - 5, cy - h/2, cx, cy - h/2 - 12, cx + 12, cy - h/2);
+            // Tail
+            g.fillTriangle(cx - w/2, cy, cx - w/2 - 14, cy - h * 0.5, cx - w/2 - 14, cy + h * 0.5);
+            // Pectoral fin
+            g.fillStyle(skin.body, 0.9);
+            g.fillTriangle(cx - 2, cy + h * 0.2, cx + 4, cy + h * 0.2 + 8, cx + 10, cy + h * 0.2);
+
+            // Inner glow (Parasite core)
+            g.fillStyle(skin.glow, 0.7);
+            g.fillEllipse(cx, cy, w * 0.5, h * 0.5);
+            // Core bright spot
+            g.fillStyle(skin.core, 0.9);
+            g.fillEllipse(cx - 2, cy - 2, w * 0.25, h * 0.25);
+            // Eye
+            g.fillStyle(0xffffff, 0.9);
+            g.fillCircle(cx + w * 0.25, cy - h * 0.15, 3);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + w * 0.27, cy - h * 0.15, 1.5);
+
+            g.generateTexture('parasite_' + skin.id, w + 30, h + 30);
+        } else if (skin.id === 'puffer') {
+            const w = s * 2.2, h = s * 2.2;
+            const cx = w/2 + 10, cy = h/2 + 10;
+            
+            // Spikes (drawn before body so they stick out)
+            g.fillStyle(skin.body, 1);
+            for(let i=0; i<12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const innerR = s * 0.9;
+                const outerR = s * 1.5;
+                const x1 = cx + Math.cos(angle - 0.15) * innerR;
+                const y1 = cy + Math.sin(angle - 0.15) * innerR;
+                const x2 = cx + Math.cos(angle + 0.15) * innerR;
+                const y2 = cy + Math.sin(angle + 0.15) * innerR;
+                const px = cx + Math.cos(angle) * outerR;
+                const py = cy + Math.sin(angle) * outerR;
+                g.fillTriangle(x1, y1, px, py, x2, y2);
+            }
+            
+            // Round body
+            g.fillCircle(cx, cy, s * 1.1);
+
+            // Inner glow (Parasite core)
+            g.fillStyle(skin.glow, 0.7);
+            g.fillCircle(cx, cy, s * 0.7);
+            
+            // Core bright spot
+            g.fillStyle(skin.core, 0.9);
+            g.fillCircle(cx - 2, cy - 2, s * 0.3);
+            
+            // Eyes
+            g.fillStyle(0xffffff, 0.9);
+            g.fillCircle(cx + s * 0.4, cy - s * 0.3, 3);
+            g.fillCircle(cx + s * 0.7, cy - s * 0.3, 3);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + s * 0.45, cy - s * 0.3, 1.5);
+            g.fillCircle(cx + s * 0.75, cy - s * 0.3, 1.5);
+
+            g.generateTexture('parasite_' + skin.id, w + 20, h + 20);
+        } else {
+            // Body - bioluminescent blob
+            g.fillStyle(skin.body, 1);
+            g.fillEllipse(s, s, s * 1.6, s * 1.2);
+            // Inner glow
+            g.fillStyle(skin.glow, 0.6);
+            g.fillEllipse(s, s, s * 0.9, s * 0.7);
+            // Core bright spot
+            g.fillStyle(skin.core, 0.8);
+            g.fillEllipse(s - 2, s - 2, s * 0.4, s * 0.3);
+            // Eye
+            g.fillStyle(0xffffff, 0.9);
+            g.fillCircle(s + 4, s - 3, 3);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(s + 5, s - 3, 1.5);
+            // Tentacles
+            g.lineStyle(2, skin.body, 0.7);
+            g.beginPath();
+            g.moveTo(s - 10, s + 2);
+            g.lineTo(s - 16, s + 6);
+            g.moveTo(s - 10, s + 5);
+            g.lineTo(s - 17, s + 10);
+            g.moveTo(s - 8, s + 7);
+            g.lineTo(s - 14, s + 13);
+            g.strokePath();
+            g.generateTexture('parasite_' + skin.id, s * 2, s * 2);
+        }
         g.destroy();
     }
 
-    generateParasiteGlow() {
+    generateParasiteGlow(skin) {
         const g = this.scene.make.graphics({ x: 0, y: 0, add: false });
         const r = 30;
-        g.fillStyle(0x00ffcc, 0.15);
+        g.fillStyle(skin.glow, 0.15);
         g.fillCircle(r, r, r);
-        g.fillStyle(0x00ffcc, 0.08);
+        g.fillStyle(skin.glow, 0.08);
         g.fillCircle(r, r, r * 0.6);
-        g.generateTexture('parasite_glow', r * 2, r * 2);
+        g.generateTexture('parasite_glow_' + skin.id, r * 2, r * 2);
         g.destroy();
     }
 
-    generateHosts() {
-        this._generateFish('host_small', 28, CONFIG.HOSTS.SMALL.color, false);
-        this._generateFish('host_small_p', 28, CONFIG.HOSTS.SMALL.color, true);
-        this._generateFish('host_medium', 42, CONFIG.HOSTS.MEDIUM.color, false);
-        this._generateFish('host_medium_p', 42, CONFIG.HOSTS.MEDIUM.color, true);
-        this._generatePredator('host_predator', 60, CONFIG.HOSTS.PREDATOR.color, false);
-        this._generatePredator('host_predator_p', 60, CONFIG.HOSTS.PREDATOR.color, true);
+    generateHosts(skin) {
+        this._generateFish('host_small_' + skin.id, 28, skin.colors.SMALL, false, skin.id);
+        this._generateFish('host_small_p_' + skin.id, 28, skin.colors.SMALL, true, skin.id);
+        this._generateFish('host_medium_' + skin.id, 42, skin.colors.MEDIUM, false, skin.id);
+        this._generateFish('host_medium_p_' + skin.id, 42, skin.colors.MEDIUM, true, skin.id);
+        this._generatePredator('host_predator_' + skin.id, 60, skin.colors.PREDATOR, false, skin.id);
+        this._generatePredator('host_predator_p_' + skin.id, 60, skin.colors.PREDATOR, true, skin.id);
     }
 
-    _generateFish(key, size, color, possessed) {
+    _generateFish(key, size, color, possessed, skinId) {
         const g = this.scene.make.graphics({ x: 0, y: 0, add: false });
         const w = size * 2, h = size * 1.2;
         const cx = w / 2 + 10, cy = h / 2 + 10;
-        // Body
-        g.fillStyle(color, 1);
-        g.fillEllipse(cx, cy, w, h);
-        // Belly
-        g.fillStyle(0xffffff, 0.15);
-        g.fillEllipse(cx, cy + h * 0.15, w * 0.7, h * 0.4);
-        // Tail
-        g.fillStyle(color, 0.8);
-        g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 18, cy - h * 0.4, cx - w/2 - 18, cy + h * 0.4);
-        // Eye
-        g.fillStyle(0xffffff, 0.9);
-        g.fillCircle(cx + w * 0.25, cy - h * 0.1, size * 0.12);
-        g.fillStyle(0x000000, 1);
-        g.fillCircle(cx + w * 0.27, cy - h * 0.1, size * 0.06);
-        // Dorsal fin
-        g.fillStyle(color, 0.6);
-        g.fillTriangle(cx - 5, cy - h/2, cx + 10, cy - h/2 - 10, cx + 15, cy - h/2 + 5);
+        
+        if (skinId === 'neon') {
+            g.fillStyle(color, 1);
+            g.fillRect(cx - w/2, cy - h/2, w, h);
+            g.fillStyle(0x000000, 0.3);
+            g.fillRect(cx - w/2, cy, w, h/2);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2, cy, cx - w/2 - 20, cy - h/2, cx - w/2 - 20, cy + h/2);
+            g.fillStyle(0xffffff, 0.9);
+            g.fillRect(cx + w * 0.2, cy - h * 0.2, size * 0.15, size * 0.15);
+            g.fillStyle(color, 1);
+            g.fillRect(cx + w * 0.22, cy - h * 0.18, size * 0.08, size * 0.08);
+            g.fillStyle(color, 0.6);
+            g.fillRect(cx - 5, cy - h/2 - 10, 15, 10);
+        } else if (skinId === 'ghost') {
+            g.fillStyle(color, 0.5);
+            g.fillEllipse(cx, cy, w * 1.2, h * 0.6);
+            g.fillStyle(color, 0.3);
+            g.fillEllipse(cx - w/2 - 10, cy, w * 0.6, h * 0.3);
+            g.fillStyle(0xffffff, 0.8);
+            g.fillCircle(cx + w * 0.3, cy - h * 0.05, size * 0.1);
+        } else if (skinId === 'volcanic') {
+            g.fillStyle(color, 1);
+            g.fillEllipse(cx, cy, w, h);
+            g.lineStyle(2, 0xffaa00, 0.8);
+            g.beginPath(); g.moveTo(cx - 10, cy); g.lineTo(cx, cy + 10); g.lineTo(cx + 10, cy); g.strokePath();
+            g.fillStyle(0x331100, 0.9);
+            for(let i=0; i<3; i++) g.fillTriangle(cx - 10 + i*10, cy - h/2 + 5, cx - 5 + i*10, cy - h/2 - 10, cx + i*10, cy - h/2 + 5);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 18, cy - h * 0.3, cx - w/2 - 18, cy + h * 0.3);
+            g.fillStyle(0xffaa00, 0.9);
+            g.fillCircle(cx + w * 0.25, cy - h * 0.1, size * 0.12);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + w * 0.27, cy - h * 0.1, size * 0.06);
+        } else {
+            g.fillStyle(color, 1);
+            g.fillEllipse(cx, cy, w, h);
+            g.fillStyle(0xffffff, 0.15);
+            g.fillEllipse(cx, cy + h * 0.15, w * 0.7, h * 0.4);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 18, cy - h * 0.4, cx - w/2 - 18, cy + h * 0.4);
+            g.fillStyle(0xffffff, 0.9);
+            g.fillCircle(cx + w * 0.25, cy - h * 0.1, size * 0.12);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + w * 0.27, cy - h * 0.1, size * 0.06);
+            g.fillStyle(color, 0.6);
+            g.fillTriangle(cx - 5, cy - h/2, cx + 10, cy - h/2 - 10, cx + 15, cy - h/2 + 5);
+        }
+        
         if (possessed) {
             g.lineStyle(2, 0x00ffcc, 0.8);
             g.strokeEllipse(cx, cy, w + 6, h + 6);
@@ -99,32 +206,71 @@ class SpriteGenerator {
         g.destroy();
     }
 
-    _generatePredator(key, size, color, possessed) {
+    _generatePredator(key, size, color, possessed, skinId) {
         const g = this.scene.make.graphics({ x: 0, y: 0, add: false });
         const w = size * 2.2, h = size * 1.0;
         const cx = w / 2 + 15, cy = h / 2 + 15;
-        // Body - more angular
-        g.fillStyle(color, 1);
-        g.fillEllipse(cx, cy, w, h);
-        // Jaw
-        g.fillStyle(color, 0.9);
-        g.fillTriangle(cx + w/2, cy, cx + w/2 + 15, cy - 5, cx + w/2 + 15, cy + 8);
-        // Teeth
-        g.fillStyle(0xffffff, 0.9);
-        for (let i = 0; i < 4; i++) {
-            g.fillTriangle(cx + w/2 + 2 + i*3, cy + 2, cx + w/2 + 3 + i*3, cy + 6, cx + w/2 + 4 + i*3, cy + 2);
+        
+        if (skinId === 'neon') {
+            g.fillStyle(color, 1);
+            g.fillRect(cx - w/2, cy - h/2, w, h);
+            g.fillStyle(color, 0.9);
+            g.fillTriangle(cx + w/2, cy, cx + w/2 + 20, cy - 5, cx + w/2 + 20, cy + 15);
+            g.fillStyle(0xffffff, 0.9);
+            for (let i = 0; i < 4; i++) g.fillRect(cx + w/2 + 2 + i*4, cy + 2, 2, 6);
+            g.fillStyle(0xffffff, 0.9);
+            g.fillRect(cx + w * 0.2, cy - h * 0.2, size * 0.15, size * 0.15);
+            g.fillStyle(0xff0000, 1);
+            g.fillRect(cx + w * 0.22, cy - h * 0.18, size * 0.08, size * 0.08);
+            g.fillStyle(color, 0.7);
+            g.fillRect(cx - 10, cy - h/2 - 15, 25, 15);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2, cy, cx - w/2 - 25, cy - h/2, cx - w/2 - 25, cy + h/2);
+        } else if (skinId === 'ghost') {
+            g.fillStyle(color, 0.5);
+            g.fillEllipse(cx, cy, w * 1.1, h * 0.8);
+            g.fillStyle(color, 0.4);
+            g.fillTriangle(cx + w/2, cy, cx + w/2 + 15, cy - 5, cx + w/2 + 15, cy + 8);
+            g.fillStyle(0xffffff, 0.5);
+            for (let i = 0; i < 4; i++) g.fillTriangle(cx + w/2 + 2 + i*3, cy + 2, cx + w/2 + 3 + i*3, cy + 6, cx + w/2 + 4 + i*3, cy + 2);
+            g.fillStyle(0xffffff, 0.8);
+            g.fillCircle(cx + w * 0.2, cy - h * 0.15, size * 0.12);
+            g.fillStyle(color, 0.3);
+            g.fillEllipse(cx - w/2 - 15, cy, w * 0.5, h * 0.4);
+        } else if (skinId === 'volcanic') {
+            g.fillStyle(color, 1);
+            g.fillEllipse(cx, cy, w, h);
+            g.fillStyle(color, 0.9);
+            g.fillTriangle(cx + w/2, cy, cx + w/2 + 15, cy - 5, cx + w/2 + 15, cy + 8);
+            g.fillStyle(0xffaa00, 0.9);
+            for (let i = 0; i < 4; i++) g.fillTriangle(cx + w/2 + 2 + i*3, cy + 2, cx + w/2 + 3 + i*3, cy + 6, cx + w/2 + 4 + i*3, cy + 2);
+            g.lineStyle(3, 0xffaa00, 0.8);
+            g.beginPath(); g.moveTo(cx - 15, cy); g.lineTo(cx + 5, cy + 15); g.lineTo(cx + 20, cy + 5); g.strokePath();
+            g.fillStyle(0xffaa00, 0.9);
+            g.fillCircle(cx + w * 0.2, cy - h * 0.15, size * 0.1);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + w * 0.22, cy - h * 0.15, size * 0.05);
+            g.fillStyle(0x331100, 0.9);
+            for(let i=0; i<4; i++) g.fillTriangle(cx - 15 + i*10, cy - h/2 + 5, cx - 10 + i*10, cy - h/2 - 15, cx - 5 + i*10, cy - h/2 + 5);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 22, cy - h * 0.5, cx - w/2 - 22, cy + h * 0.5);
+        } else {
+            g.fillStyle(color, 1);
+            g.fillEllipse(cx, cy, w, h);
+            g.fillStyle(color, 0.9);
+            g.fillTriangle(cx + w/2, cy, cx + w/2 + 15, cy - 5, cx + w/2 + 15, cy + 8);
+            g.fillStyle(0xffffff, 0.9);
+            for (let i = 0; i < 4; i++) g.fillTriangle(cx + w/2 + 2 + i*3, cy + 2, cx + w/2 + 3 + i*3, cy + 6, cx + w/2 + 4 + i*3, cy + 2);
+            g.fillStyle(0xff4444, 0.9);
+            g.fillCircle(cx + w * 0.2, cy - h * 0.15, size * 0.1);
+            g.fillStyle(0x000000, 1);
+            g.fillCircle(cx + w * 0.22, cy - h * 0.15, size * 0.05);
+            g.fillStyle(color, 0.7);
+            g.fillTriangle(cx - 10, cy - h/2, cx + 5, cy - h/2 - 18, cx + 20, cy - h/2);
+            g.fillStyle(color, 0.8);
+            g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 22, cy - h * 0.5, cx - w/2 - 22, cy + h * 0.5);
         }
-        // Eye (angry)
-        g.fillStyle(0xff4444, 0.9);
-        g.fillCircle(cx + w * 0.2, cy - h * 0.15, size * 0.1);
-        g.fillStyle(0x000000, 1);
-        g.fillCircle(cx + w * 0.22, cy - h * 0.15, size * 0.05);
-        // Dorsal fin
-        g.fillStyle(color, 0.7);
-        g.fillTriangle(cx - 10, cy - h/2, cx + 5, cy - h/2 - 18, cx + 20, cy - h/2);
-        // Tail
-        g.fillStyle(color, 0.8);
-        g.fillTriangle(cx - w/2 - 5, cy, cx - w/2 - 22, cy - h * 0.5, cx - w/2 - 22, cy + h * 0.5);
+        
         if (possessed) {
             g.lineStyle(3, 0x00ffcc, 0.8);
             g.strokeEllipse(cx, cy, w + 10, h + 10);

@@ -32,7 +32,7 @@ class Shark extends Phaser.Physics.Arcade.Sprite {
 
     update(delta, scrollSpeed) {
         // Move left
-        this.x -= (this.moveSpeed + scrollSpeed * 0.3) * (delta / 1000);
+        this.x -= (this.moveSpeed + scrollSpeed * 0.85) * (delta / 1000);
 
         // Subtle vertical bob
         this.bobTimer += delta * 0.002;

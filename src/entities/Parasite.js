@@ -4,7 +4,10 @@
 
 class Parasite extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'parasite');
+        const activeSkinId = localStorage.getItem('pd_parasite_skin') || 'classic';
+        const skin = CONFIG.SKINS.PARASITE.find(s => s.id === activeSkinId) || CONFIG.SKINS.PARASITE[0];
+
+        super(scene, x, y, 'parasite_' + skin.id);
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -19,7 +22,7 @@ class Parasite extends Phaser.Physics.Arcade.Sprite {
         this.invincibleTimer = null;
 
         // Glow sprite
-        this.glow = scene.add.image(x, y, 'parasite_glow');
+        this.glow = scene.add.image(x, y, 'parasite_glow_' + skin.id);
         this.glow.setAlpha(0.4);
         this.glow.setDepth(9);
         this.glow.setBlendMode(Phaser.BlendModes.ADD);
@@ -33,6 +36,7 @@ class Parasite extends Phaser.Physics.Arcade.Sprite {
             alpha: { start: 0.5, end: 0 },
             lifespan: 400,
             frequency: 60,
+            tint: skin.glow,
             blendMode: Phaser.BlendModes.ADD,
         });
         this.trail.setDepth(8);

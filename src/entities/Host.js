@@ -4,39 +4,43 @@
 
 class Host extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, tier) {
-        const cfg = CONFIG.HOSTS[tier];
-        const key = 'host_' + tier.toLowerCase();
+        const activeHostSkin = localStorage.getItem('pd_host_skin') || 'standard';
+        const key = 'host_' + tier.toLowerCase() + '_' + activeHostSkin;
+        
         super(scene, x, y, key);
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         this.tier = tier;
-        this.cfg = cfg;
+        this.cfg = CONFIG.HOSTS[tier];
         this.normalKey = key;
-        this.possessedKey = key + '_p';
+        this.possessedKey = 'host_' + tier.toLowerCase() + '_p_' + activeHostSkin;
         this.setDepth(6);
 
         // Hitbox
-        const bw = cfg.size * 1.4, bh = cfg.size * 0.8;
+        const bw = this.cfg.size * 1.4, bh = this.cfg.size * 0.8;
         this.body.setSize(bw, bh);
         this.body.setOffset((this.width - bw) / 2, (this.height - bh) / 2);
 
         this.possessed = false;
-        this.energy = cfg.energy;       // seconds remaining
-        this.maxEnergy = cfg.energy;
-        this.health = cfg.health;
-        this.maxHealth = cfg.health;
+        this.energy = this.cfg.energy;       // seconds remaining
+        this.maxEnergy = this.cfg.energy;
+        this.health = this.cfg.health;
+        this.maxHealth = this.cfg.health;
         this.moveSpeed = 80;            // free-swimming speed (before possession)
         this.velocityY = 0;
         this.bobTimer = Math.random() * Math.PI * 2;
 
         // Glow effect for when possessed
-        this.possessGlow = scene.add.image(x, y, 'parasite_glow');
+        const activeParasiteSkinId = localStorage.getItem('pd_parasite_skin') || 'classic';
+        const parasiteSkin = CONFIG.SKINS.PARASITE.find(s => s.id === activeParasiteSkinId) || CONFIG.SKINS.PARASITE[0];
+
+        this.possessGlow = scene.add.image(x, y, 'parasite_glow_' + parasiteSkin.id);
         this.possessGlow.setAlpha(0);
         this.possessGlow.setScale(1.5);
         this.possessGlow.setBlendMode(Phaser.BlendModes.ADD);
         this.possessGlow.setDepth(5);
-        this.possessGlow.setTint(0x00ffcc);
+        this.possessGlow.setTint(parasiteSkin.glow);
     }
 
     update(delta, cursors, scrollSpeed) {
@@ -50,7 +54,7 @@ class Host extends Phaser.Physics.Arcade.Sprite {
 
     _updateFree(delta, scrollSpeed) {
         // Free hosts swim left slowly (slower than sharks)
-        this.x -= (this.moveSpeed + scrollSpeed * 0.15) * (delta / 1000);
+        this.x -= (this.moveSpeed + scrollSpeed * 0.75) * (delta / 1000);
 
         // Bob
         this.bobTimer += delta * 0.003;

@@ -76,10 +76,18 @@ class ScoreSystem {
         return this.getScore() > this.highScore;
     }
 
+    calculateBioMatterEarned() {
+        return Math.floor(this.getDistance() * 0.1) + (this.sharksEaten * 5) + (this.sharksDodged * 1) + (this.itemsCollected * 2);
+    }
+
     saveHighScore() {
         if (this.isNewHighScore()) {
             this.highScore = this.getScore();
             localStorage.setItem('pd_highscore', this.highScore.toString());
         }
+        
+        const earned = this.calculateBioMatterEarned();
+        const currentBio = parseInt(localStorage.getItem('pd_biomatter') || '0', 10);
+        localStorage.setItem('pd_biomatter', (currentBio + earned).toString());
     }
 }

@@ -24,7 +24,7 @@ class Item extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(delta, scrollSpeed) {
-        this.x -= (60 + scrollSpeed * 0.2) * (delta / 1000);
+        this.x -= (60 + scrollSpeed * 0.8) * (delta / 1000);
 
         // Float bob
         this.bobTimer += delta * 0.004;
